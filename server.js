@@ -1,10 +1,16 @@
 const express = require('express');
 const app = express();
 const dbConnect=require('./config/dbcon');
+const logger = require('./middlewares/logger');
+const cors = require('cors');
 
 require('dotenv').config();
+app.use(cors({ origin: 'http://localhost:3000' }));
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+//Middleware to display the requests in console
+app.use(logger); 
 
 // Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
