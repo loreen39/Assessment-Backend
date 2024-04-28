@@ -22,7 +22,7 @@ const addProduct = async (req, res) => {
             price: price,
             image: req.file.filename,
         });
-        res.status(200).json({message: 'Product added successfully.', product: addedProduct});
+        res.status(200).json(addedProduct);
     } catch(error){
         if (req.file) {
             await fs.unlink(oldImagePath);

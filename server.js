@@ -16,7 +16,10 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 
 const productRouter = require('./Routes/productRouter');
-app.use("/api",productRouter);
+app.use("/api", productRouter);
+
+const accountRouter = require('./Routes/accountRouter');
+app.use("/api", accountRouter);
 
 dbConnect()
 .then(() => {
