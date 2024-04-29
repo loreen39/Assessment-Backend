@@ -15,6 +15,10 @@ app.use(logger);
 // Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from the "uploads" directory
+const Imgpath = require('path');
+app.use('/uploads', express.static(Imgpath.join(__dirname, 'uploads')));
+
 const productRouter = require('./Routes/productRouter');
 app.use("/api", productRouter);
 
