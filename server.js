@@ -3,6 +3,7 @@ const app = express();
 const dbConnect=require('./config/dbcon');
 const logger = require('./middlewares/logger');
 const cors = require('cors');
+const { addUser } = require('./Controllers/addDefaultUser');
 
 require('dotenv').config();
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -15,15 +16,12 @@ app.use(logger);
 // Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the "uploads" directory
-const Imgpath = require('path');
-app.use('/uploads', express.static(Imgpath.join(__dirname, 'uploads')));
 
 const productRouter = require('./Routes/productRouter');
-app.use("/api", productRouter);
+app.use("/api/product", productRouter);
 
 const accountRouter = require('./Routes/accountRouter');
-app.use("/api", accountRouter);
+app.use("/api/logger", accountRouter);
 
 dbConnect()
 .then(() => {
@@ -32,6 +30,8 @@ dbConnect()
     app.listen(process.env.PORT, () => {
         console.log('App is listening on port ' + process.env.PORT);
     });
+
+    addUser();
 })
 .catch((error) => {
     // Handle error

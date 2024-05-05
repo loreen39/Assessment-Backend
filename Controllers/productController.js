@@ -6,13 +6,10 @@ const fs = require("fs").promises;
 // Let the admin add a product
 const addProduct = async (req, res) => {
     const {name, description, price} = req.body;
-    const oldImagePath = './uploads/' + req.file.filename;
 
-    if(validator.isEmpty(name) || validator.isEmpty(description) || validator.isEmpty(price)){
-        if(req.file) {
-            await fs.unlink(oldImagePath);
-        }
-        return res.status(400).json({error: "All Fields are required!"});
+    // Check if any of the required fields are missing or empty
+    if (!name || !description || !price) {
+        return res.status(400).json({error: "All fields are required and cannot be empty!"});
     }
 
     try{
@@ -20,13 +17,9 @@ const addProduct = async (req, res) => {
             name: name,
             description: description,
             price: price,
-            image: req.file.filename,
         });
         res.status(200).json(addedProduct);
     } catch(error){
-        if (req.file) {
-            await fs.unlink(oldImagePath);
-        }
         res.status(500).json({error: error.message});
     }
 }
@@ -64,12 +57,12 @@ const deleteProduct = async (req, res) => {
 //Update a product
 const updateProduct = async (req, res) => {
     const { id } = req.params;
-    const { name, description, price, image } = req.body;
+    const { name, description, price } = req.body;
 
     try {
         const updatedProduct = await productModel.findOneAndUpdate(
             { _id: id },
-            { name, description, price, image },
+            { name, description, price },
             { new: true } // to return the updated document
         );
 

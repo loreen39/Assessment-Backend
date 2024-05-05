@@ -4,7 +4,7 @@ const ifHaveToken = require('../middlewares/tokenExist');
 
 const {loginUser, logout} = require('../Controllers/accountController');
 
-router.put('/login', ifHaveToken , loginUser);
+router.put('/login' , loginUser);
 router.post('/logout' , logout);
 
 module.exports = router;
